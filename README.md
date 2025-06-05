@@ -12,7 +12,7 @@ a real-world need.
 ## Usage
 
 ```bash
-numex <NUMBER>
+nmx <NUMBER>
 ```
 
 Where `<NUMBER>` can be:
@@ -26,7 +26,7 @@ While similar tools exist, NumEx focuses on simplicity and intuitive syntax:
 ### bc (Basic Calculator)
 ``` bash
 echo "ibase=16; FFF"|bc    # Traditional bc approach
-numex 0xfff                # NumEx equivalent
+nmx 0xfff                # NumEx equivalent
 ```
 
 ### Benefits
@@ -48,7 +48,7 @@ Ensure you have Rust installed on your system. Then clone this repository and bu
 ```bash
 cargo build --release
 ```
-The binary will be available at `target/release/numex`.
+The binary will be available at `target/release/nmx`.
 
 Install with cargo like:
 
@@ -61,7 +61,7 @@ cargo install --path .
 Converting decimal number 42:
 
 ```bash
-$ numex 42
+$ nmx 42
 Dec: 42
 Hex: 0x2a
 Bin: 0b101010
