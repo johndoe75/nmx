@@ -1,6 +1,6 @@
 [package]
-name = "numex"
-version = "0.1.0"
+name = "nmx"
+version = "1.0.1"
 edition = "2024"
 
 [dependencies]
