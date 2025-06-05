@@ -1,6 +1,7 @@
 use clap::Parser;
 use regex::Regex;
 use std::i64;
+use colored::Colorize;
 
 const HEX_PATTERN: &str = r"^0x[0-9a-fA-F]+$";
 const DEC_PATTERN: &str = r"^-?[0-9]+$";
@@ -23,9 +24,9 @@ fn main() {
 }
 
 fn display_number_formats(value: i64) {
-    println!("{}", FORMAT_DEC.replace("{:#}", &value.to_string()));
-    println!("{}", FORMAT_HEX.replace("{:#x}", &format!("{:#x}", value)));
-    println!("{}", FORMAT_BIN.replace("{:#b}", &format!("{:#b}", value)));
+    println!("{}", FORMAT_DEC.replace("{:#}", &value.to_string()).bright_green());
+    println!("{}", FORMAT_HEX.replace("{:#x}", &format!("{:#x}", value)).bright_cyan());
+    println!("{}", FORMAT_BIN.replace("{:#b}", &format!("{:#b}", value)).bright_magenta());
 }
 
 fn handle_parse_error(error: anyhow::Error) -> ! {
