@@ -10,23 +10,40 @@ const FORMAT_DEC: &str = "Dec:\t{:#}";
 const FORMAT_HEX: &str = "Hex:\t{:#x}";
 const FORMAT_BIN: &str = "Bin:\t{:#b}";
 
-#[derive(Parser)]
+#[derive(Debug, Parser)]
 #[command(author, version, about, long_about = None)]
 struct Args {
     #[arg(value_parser = clap::value_parser!(String))]
     number: String,
+
+    #[arg(short, long, help = "Display result without colors")]
+    monochrome: bool,
 }
 
 fn main() {
     let args = Args::parse();
     let parsed_value = parse_number(&args.number).unwrap_or_else(|e| handle_parse_error(e));
-    display_number_formats(parsed_value);
+    display_number_formats(parsed_value, args.monochrome);
 }
 
-fn display_number_formats(value: i64) {
-    println!("{}", FORMAT_DEC.replace("{:#}", &value.to_string()).bright_green());
-    println!("{}", FORMAT_HEX.replace("{:#x}", &format!("{:#x}", value)).bright_cyan());
-    println!("{}", FORMAT_BIN.replace("{:#b}", &format!("{:#b}", value)).bright_magenta());
+fn display_number_formats(value: i64, monochrome: bool) -> () {
+    let dec_line = format_line(FORMAT_DEC, "{:#}", &value.to_string());
+    let hex_line = format_line(FORMAT_HEX, "{:#x}", &format!("{:#x}", value));
+    let bin_line = format_line(FORMAT_BIN, "{:#b}", &format!("{:#b}", value));
+
+    if monochrome {
+        println!("{}", dec_line);
+        println!("{}", hex_line);
+        println!("{}", bin_line);
+    } else {
+        println!("{}", dec_line.bright_green());
+        println!("{}", hex_line.bright_cyan());
+        println!("{}", bin_line.bright_magenta());
+    }
+}
+
+fn format_line(template: &str, placeholder: &str, formatted_value: &str) -> String {
+    template.replace(placeholder, formatted_value)
 }
 
 fn handle_parse_error(error: anyhow::Error) -> ! {
