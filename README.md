@@ -19,6 +19,21 @@ Where `<NUMBER>` can be:
 - A decimal number (e.g., `42`, `-123`)
 - A hexadecimal number (e.g., `0x2A`, `0xffff`)
 
+Type `nmx -h` to see how to use nmx:
+
+```
+❯ nmx -h
+Usage: nmx [OPTIONS] <NUMBER>
+
+Arguments:
+  <NUMBER>
+
+Options:
+  -m, --monochrome  Display result without colors
+  -h, --help        Print help
+  -V, --version     Print version
+```
+
 ## Comparison with Alternatives
 
 While similar tools exist, NumEx focuses on simplicity and intuitive syntax:
@@ -58,13 +73,13 @@ cargo install --path .
 
 ### Examples
 
-Converting decimal number 42:
+Converting hexadecimal number 0xcafe:
 
 ```bash
-$ nmx 42
-Dec: 42
-Hex: 0x2a
-Bin: 0b101010
+❯ nmx 0xcafe
+Dec:    51966
+Hex:    0xcafe
+Bin:    0b1100101011111110
 ```
 
 ## Error Handling
