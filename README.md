@@ -1,3 +1,86 @@
-# numex
+# NumEx (Number Expression Calculator)
 
-A small CLI number converter for decimal, hexadecimal, … conversion.
+A lightweight command-line utility for number base conversion written in Rust.
+
+## Overview
+
+NumEx is a simple yet practical tool designed to convert numbers between
+different bases (hexadecimal, decimal, etc.) with an intuitive syntax. It was
+developed as a learning project for the Rust programming language while solving
+a real-world need.
+
+## Usage
+
+```bash
+numex <NUMBER>
+```
+
+Where `<NUMBER>` can be:
+- A decimal number (e.g., `42`, `-123`)
+- A hexadecimal number (e.g., `0x2A`, `0xffff`)
+
+## Comparison with Alternatives
+
+While similar tools exist, NumEx focuses on simplicity and intuitive syntax:
+
+### bc (Basic Calculator)
+``` bash
+echo "ibase=16; FFF"|bc    # Traditional bc approach
+numex 0xfff                # NumEx equivalent
+```
+
+### Benefits
+- More intuitive syntax
+- Less typing required
+- No need to remember complex notation
+- Straightforward command-line interface
+
+## Project Goals
+- Provide a user-friendly number conversion utility
+- Serve as a practical Rust learning project
+- Simplify common number base conversion tasks
+
+
+## Installation
+
+Ensure you have Rust installed on your system. Then clone this repository and build using cargo:
+
+```bash
+cargo build --release
+```
+The binary will be available at `target/release/numex`.
+
+Install with cargo like:
+
+```bash
+cargo install --path .
+```
+
+### Examples
+
+Converting decimal number 42:
+
+```bash
+$ numex 42
+Dec: 42
+Hex: 0x2a
+Bin: 0b101010
+```
+
+## Error Handling
+
+The program will display an error message if:
+- The input number format is invalid
+- The number is too large or small for a 64-bit signed integer
+- The input contains invalid characters
+
+## Dependencies
+
+- clap (4.5.39) - Command line argument parsing
+- anyhow (1.0.98) - Error handling
+- regex (1.11.1) - Pattern matching for number validation
+- colored (3.0.0) - Terminal coloring utilities
+
+## License
+
+MIT License

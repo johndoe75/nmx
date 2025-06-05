@@ -5,6 +5,10 @@ use std::i64;
 const HEX_PATTERN: &str = r"^0x[0-9a-fA-F]+$";
 const DEC_PATTERN: &str = r"^-?[0-9]+$";
 
+const FORMAT_DEC: &str = "Dec:\t{:#}";
+const FORMAT_HEX: &str = "Hex:\t{:#x}";
+const FORMAT_BIN: &str = "Bin:\t{:#b}";
+
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
 struct Args {
@@ -14,18 +18,19 @@ struct Args {
 
 fn main() {
     let args = Args::parse();
+    let parsed_value = parse_number(&args.number).unwrap_or_else(|e| handle_parse_error(e));
+    display_number_formats(parsed_value);
+}
 
-    let parsed_value = match parse_number(&args.number) {
-        Ok(number) => number,
-        Err(error) => {
-            eprintln!("Error: {}", error);
-            std::process::exit(1);
-        },
-    };
+fn display_number_formats(value: i64) {
+    println!("{}", FORMAT_DEC.replace("{:#}", &value.to_string()));
+    println!("{}", FORMAT_HEX.replace("{:#x}", &format!("{:#x}", value)));
+    println!("{}", FORMAT_BIN.replace("{:#b}", &format!("{:#b}", value)));
+}
 
-    println!("Dec:\t{:#}", parsed_value);
-    println!("Hex:\t{:#x}", parsed_value);
-    println!("Bin:\t{:#b}", parsed_value);
+fn handle_parse_error(error: anyhow::Error) -> ! {
+    eprintln!("Error: {}", error);
+    std::process::exit(1);
 }
 
 fn parse_number(input: &str) -> anyhow::Result<i64> {
