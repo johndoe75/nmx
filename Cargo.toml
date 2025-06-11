@@ -2,8 +2,10 @@
 name = "nmx"
 version = "1.0.2"
 edition = "2024"
+authors = ["johndoe75"]
 
 [dependencies]
 anyhow = "1.0.98"
 clap = { version = "4.5.39", features = ["derive"] }
 colored = "3.0.0"
+regex = "1.11.1"
