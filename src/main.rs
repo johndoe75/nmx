@@ -60,3 +60,83 @@ fn parse_number(input: &str) -> anyhow::Result<i64> {
 
     result.map_err(|_| anyhow::anyhow!("Invalid number format"))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_decimal() {
+        assert_eq!(parse_number("42").unwrap(), 42);
+        assert_eq!(parse_number("0").unwrap(), 0);
+        assert_eq!(parse_number("-10").unwrap(), -10);
+    }
+
+    #[test]
+    fn test_parse_hex() {
+        assert_eq!(parse_number("0xFF").unwrap(), 255);
+        assert_eq!(parse_number("0X1a").unwrap(), 26);
+        assert_eq!(parse_number("0x0").unwrap(), 0);
+    }
+
+    #[test]
+    fn test_parse_octal() {
+        assert_eq!(parse_number("0o77").unwrap(), 63);
+        assert_eq!(parse_number("0O10").unwrap(), 8);
+        assert_eq!(parse_number("0o0").unwrap(), 0);
+    }
+
+    #[test]
+    fn test_parse_invalid() {
+        assert!(parse_number("abc").is_err());
+        assert!(parse_number("1.5").is_err());
+        assert!(parse_number("").is_err());
+    }
+
+    #[test]
+    fn test_format_line() {
+        assert_eq!(format_line("Dec: {:#}", "{:#}", "42"), "Dec: 42");
+        assert_eq!(format_line("Hex: {:#x}", "{:#x}", "ff"), "Hex: ff");
+    }
+
+    #[test]
+    fn test_edge_cases_max_min() {
+        assert_eq!(parse_number("9223372036854775807").unwrap(), i64::MAX);
+        assert_eq!(parse_number("-9223372036854775808").unwrap(), i64::MIN);
+    }
+
+    #[test]
+    fn test_edge_cases_leading_zeros() {
+        assert_eq!(parse_number("007").unwrap(), 7);
+        assert_eq!(parse_number("0x00FF").unwrap(), 255);
+        assert_eq!(parse_number("0o0077").unwrap(), 63);
+    }
+
+    #[test]
+    fn test_edge_cases_mixed_case() {
+        assert_eq!(parse_number("0xFf").unwrap(), 255);
+        assert_eq!(parse_number("0XaA").unwrap(), 170);
+        assert_eq!(parse_number("0O77").unwrap(), 63);
+    }
+
+    #[test]
+    fn test_edge_cases_large_hex() {
+        assert_eq!(parse_number("0xFFFFFFFF").unwrap(), 4294967295_i64);
+        assert!(parse_number("0xFFFFFFFFFFFFFFFF").is_err());
+    }
+
+    #[test]
+    fn test_edge_cases_overflow() {
+        assert!(parse_number("9223372036854775808").is_err());
+        assert!(parse_number("-9223372036854775809").is_err());
+    }
+
+    #[test]
+    fn test_edge_cases_invalid_prefix() {
+        assert!(parse_number("0b101").is_err());
+        assert!(parse_number("0x").is_err());
+        assert!(parse_number("0o").is_err());
+        assert!(parse_number("0xGG").is_err());
+        assert!(parse_number("0o89").is_err());
+    }
+}
